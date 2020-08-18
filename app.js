@@ -5,12 +5,16 @@ const path = require('path');
 const session = require('express-session');
 const nunjucks = require('nunjucks');
 const dotenv = require('dotenv');
-const { sequelize } = require('./models');
+const passport = require('passport');
+
 
 dotenv.config();
 const pageRouter = require('./routes/page');
+const { sequelize } = require('./models');
+const passportConfig = require('./passport');
 
 const app = express();
+passportConfig(); // passport 설정
 app.set('port', process.env.PORT || 8001);
 app.set('view engine', 'html');
 nunjucks.configure('views', { //
@@ -25,7 +29,7 @@ sequelize.sync({ force: false })
   .catch((err) => {
     console.error(err);
   });
-  
+
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
@@ -40,7 +44,8 @@ app.use(session({
         secure: false,
     },
 }));
-
+app.use(passport.initialize()); // req에 passport설정
+app.use(passport.session()); // req.session에 passprt 정보 저장 (req.session은 express-session에서 생성하는 거니까 express-session보다 뒤에 연결)
 
 app.use('/', pageRouter);
 
