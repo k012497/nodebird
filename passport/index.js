@@ -1,6 +1,6 @@
 const passport = require('passport');
 const local = require('./localStrategy');
-const kakao = requrie('./kakoStrategy');
+const kakao = require('./kakoStrategy');
 const User = require('../models/user');
 
 module.exports = () => {
