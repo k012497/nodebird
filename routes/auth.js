@@ -58,4 +58,13 @@ router.get('/logout', isLoggedIn, (req, res) => {
     res.redirect('/'); // 메인으로 되돌아가기 return 하고 안 하고 차이 ???
 });
 
+// 4. 카카오 로그인 라우터
+router.get('/kakao', passport.authenticate('kakao'));
+
+router.get('/kakao/callback', passport.authenticate('kakao', {
+  failureRedirect: '/',
+}), (req, res) => {
+  res.redirect('/');
+});
+
 module.exports = router;
