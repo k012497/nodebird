@@ -1,6 +1,8 @@
 const express = require('express');
-
 const { isLoggedIn } = require('./middlewares');
+
+const router = express.Router();
+
 router.post('/:id/follow', isLoggedIn, async (req, res, next) => {
     try {
         const user = await user.findOne({ where: { id: req.user.id } });
